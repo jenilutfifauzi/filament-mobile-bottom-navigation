@@ -12,7 +12,13 @@
         @foreach ($navigationItems as $item)
             <a 
                 href="{{ $item->getUrl() }}" 
-                class="fmbn-nav-item"
+                @class([
+                    'fmbn-nav-item',
+                    'fmbn-nav-item--active' => $item->isActive(),
+                ])
+                @if ($item->isActive())
+                    aria-current="page"
+                @endif
             >
                 <span class="fmbn-nav-item__icon">
                     @svg($item->getIcon(), 'h-6 w-6')
