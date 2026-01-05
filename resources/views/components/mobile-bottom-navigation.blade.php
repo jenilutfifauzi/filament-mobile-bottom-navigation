@@ -8,6 +8,22 @@
 --}}
 
 <style>
+    /* CSS Variables for CLS prevention */
+    :root {
+        --fmbn-nav-base-height: 61px;
+        --fmbn-nav-padding-top: 8px;
+        --fmbn-nav-padding-bottom: 8px;
+        --fmbn-nav-height: calc(var(--fmbn-nav-base-height) + env(safe-area-inset-bottom, 0px));
+    }
+
+    /* CRITICAL: Reserve space for mobile navigation to prevent Cumulative Layout Shift */
+    @media (max-width: 767px) {
+        body {
+            padding-bottom: var(--fmbn-nav-height);
+            margin-bottom: 0;
+        }
+    }
+
     /* Critical inline CSS for graceful degradation (fallback when external CSS fails) */
     .fmbn-bottom-nav {
         position: fixed;
@@ -15,12 +31,26 @@
         left: 0;
         right: 0;
         z-index: 50;
+        width: 100%;
         display: flex;
         flex-wrap: wrap;
-        width: 100%;
+        height: var(--fmbn-nav-height);
         background-color: #ffffff;
         border-top: 1px solid #e5e7eb;
         box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.1);
+        padding: var(--fmbn-nav-padding-top) 0;
+        padding-bottom: calc(var(--fmbn-nav-padding-bottom) + env(safe-area-inset-bottom, 0px));
+    }
+
+    /* Hide on desktop (no padding needed) */
+    @media (min-width: 768px) {
+        .fmbn-bottom-nav {
+            display: none;
+        }
+
+        body {
+            padding-bottom: 0;
+        }
     }
 
     /* Fallback for browsers without flexbox */
@@ -38,7 +68,8 @@
         align-items: center;
         justify-content: center;
         gap: 0.25rem;
-        min-height: 4.5rem;
+        min-height: 44px;
+        min-width: 44px;
         padding: 0.5rem;
         color: #374151;
         text-decoration: none;
@@ -147,7 +178,8 @@
 </style>
 
 @if ($navigationItems->isNotEmpty())
-    <nav class="fmbn-bottom-nav" role="navigation" aria-label="Mobile bottom navigation">
+    <nav class="fmbn-bottom-nav" role="navigation" aria-label="Mobile bottom navigation"
+         style="height: calc(61px + env(safe-area-inset-bottom, 0px));">
         @foreach ($navigationItems as $item)
             <a
                 href="{{ $item->getUrl() }}"
@@ -158,8 +190,9 @@
                 @if ($item->isActive())
                     aria-current="page"
                 @endif
+                style="min-width: 44px; min-height: 44px;"
             >
-                <span class="fmbn-nav-item__icon">
+                <span class="fmbn-nav-item__icon" style="width: 24px; height: 24px;">
                     @svg($item->getIcon(), 'h-6 w-6')
 
                     @if ($item->getBadge())
@@ -173,7 +206,7 @@
                         </span>
                     @endif
                 </span>
-                <span class="fmbn-nav-item__label">
+                <span class="fmbn-nav-item__label" style="font-size: 12px; line-height: 1.2;">
                     {{ $item->getLabel() }}
                 </span>
             </a>
