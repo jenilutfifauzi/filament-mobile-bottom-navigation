@@ -72,24 +72,61 @@ body {
 /**
  * Navigation Item
  * Flex column layout: icon above label
+ * Touch-optimized for mobile devices with minimum 44x44px targets
  */
 .fmbn-nav-item {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 0.25rem;
 
-    padding: 0.75rem 1rem;
+    padding: 0.5rem 0.75rem;
 
-    /* Accessibility: Minimum touch target size (iOS HIG) */
+    /* Accessibility: Minimum touch target size (WCAG 2.1 Level AA) */
     min-width: 44px;
     min-height: 44px;
 
     text-decoration: none;
     color: var(--gray-700);
 
+    /* Touch Optimization */
+    /* Remove 300ms click delay on mobile browsers */
+    touch-action: manipulation;
+
+    /* Prevent default tap highlight (we'll use opacity instead) */
+    -webkit-tap-highlight-color: transparent;
+
+    /* Prevent text selection during touch */
+    user-select: none;
+    -webkit-user-select: none;
+
+    /* Prevent iOS callout menu on long press */
+    -webkit-touch-callout: none;
+
     /* Smooth transitions for color and background */
-    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, opacity 0.1s ease;
+}
+
+/**
+ * Navigation Item - Touch/Active State
+ * Immediate visual feedback on touch
+ * Uses opacity and subtle scale for tactile response
+ */
+.fmbn-nav-item:active {
+    opacity: 0.7;
+    transform: scale(0.95);
+    transition: all 0.1s ease;
+}
+
+/**
+ * Navigation Item - Focus State (Keyboard Navigation)
+ * Visible focus indicator for accessibility
+ */
+.fmbn-nav-item:focus-visible {
+    outline: 2px solid var(--primary-600);
+    outline-offset: 2px;
+    border-radius: 0.5rem;
 }
 
 /**
@@ -283,3 +320,75 @@ body {
  * - No plugin configuration needed
  * - Works with any Filament-supported color
  */
+
+/* ============================================
+   ACCESSIBILITY ENHANCEMENTS
+   ============================================ */
+
+/**
+ * Dark Mode Support
+ * Navigation items in dark mode
+ */
+.dark .fmbn-nav-item {
+    color: var(--gray-400);
+}
+
+.dark .fmbn-nav-item--active {
+    color: var(--primary-400);
+    background-color: var(--primary-950);
+}
+
+.dark .fmbn-nav-item:focus-visible {
+    outline-color: var(--primary-400);
+}
+
+/**
+ * High Contrast Mode Support
+ * Ensures navigation is visible in Windows High Contrast Mode
+ * and other high contrast accessibility settings
+ */
+@media (prefers-contrast: more) {
+    .fmbn-nav-item {
+        border: 1px solid currentColor;
+    }
+
+    .fmbn-nav-item--active {
+        background-color: Highlight;
+        color: HighlightText;
+    }
+
+    .fmbn-nav-item:focus-visible {
+        outline-width: 3px;
+    }
+}
+
+/**
+ * Reduced Motion Support
+ * Respects user's motion preferences
+ * Disables animations and scale transforms for users who prefer reduced motion
+ */
+@media (prefers-reduced-motion: reduce) {
+    .fmbn-nav-item {
+        transition: none;
+    }
+
+    .fmbn-nav-item:active {
+        transform: none; /* No scale animation */
+        transition: none;
+    }
+}
+
+/**
+ * Forced Colors Mode Support
+ * For high contrast and accessibility tools
+ */
+@media (forced-colors: active) {
+    .fmbn-nav-item {
+        border: 1px solid ButtonText;
+    }
+
+    .fmbn-nav-item--active {
+        background-color: Highlight;
+        color: HighlightText;
+    }
+}
