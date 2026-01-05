@@ -186,7 +186,26 @@
         }
     }
 
-    /* Dark mode support */
+    /* Light mode - Explicit override for manual toggle (highest priority) */
+    html:not(.dark) .fmbn-bottom-nav {
+        background-color: #ffffff !important;
+        border-top-color: #e5e7eb !important;
+    }
+
+    html:not(.dark) .fmbn-nav-item {
+        color: #374151 !important;
+    }
+
+    html:not(.dark) .fmbn-nav-item:hover {
+        background-color: #f9fafb !important;
+    }
+
+    html:not(.dark) .fmbn-nav-item--active {
+        color: #3b82f6 !important;
+        background-color: #f0f9ff !important;
+    }
+
+    /* Dark mode support - System preference (OS/Browser setting) */
     @media (prefers-color-scheme: dark) {
         .fmbn-bottom-nav {
             background-color: #1f2937;
@@ -205,6 +224,25 @@
             color: #60a5fa;
             background-color: #1e3a8a;
         }
+    }
+
+    /* Dark mode support - Class-based (Filament manual toggle) - Overrides media query */
+    .dark .fmbn-bottom-nav {
+        background-color: #1f2937 !important;
+        border-top-color: #374151 !important;
+    }
+
+    .dark .fmbn-nav-item {
+        color: #d1d5db !important;
+    }
+
+    .dark .fmbn-nav-item:hover {
+        background-color: #111827 !important;
+    }
+
+    .dark .fmbn-nav-item--active {
+        color: #60a5fa !important;
+        background-color: #1e3a8a !important;
     }
 
     /* High contrast mode */
