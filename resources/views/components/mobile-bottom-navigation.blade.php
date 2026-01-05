@@ -1,10 +1,27 @@
-{{-- Mobile Bottom Navigation Component --}}
-{{-- This component will be fully implemented in Story 1.2 --}}
+{{--
+    Mobile Bottom Navigation Component
+    
+    Renders the bottom navigation bar for mobile devices with icons and labels.
+    Navigation items are retrieved from the current Filament panel.
+    
+    @var \Illuminate\Support\Collection<int, \Filament\Navigation\NavigationItem> $navigationItems
+--}}
 
-<nav class="fmbn-bottom-nav">
-    {{-- Navigation items will be rendered here in Story 1.2 --}}
-    @foreach ($navigationItems as $item)
-        {{-- Placeholder for navigation item --}}
-        <div>{{ $item->getLabel() }}</div>
-    @endforeach
-</nav>
+@if ($navigationItems->isNotEmpty())
+    <nav class="fmbn-bottom-nav" role="navigation" aria-label="Mobile bottom navigation">
+        @foreach ($navigationItems as $item)
+            <a 
+                href="{{ $item->getUrl() }}" 
+                class="fmbn-nav-item"
+            >
+                <span class="fmbn-nav-item__icon">
+                    @svg($item->getIcon(), 'h-6 w-6')
+                </span>
+                <span class="fmbn-nav-item__label">
+                    {{ $item->getLabel() }}
+                </span>
+            </a>
+        @endforeach
+    </nav>
+@endif
+
