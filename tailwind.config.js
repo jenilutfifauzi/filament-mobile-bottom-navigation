@@ -1,10 +1,14 @@
-const preset = require('./vendor/filament/filament/tailwind.config.preset')
+import forms from '@tailwindcss/forms'
+import typography from '@tailwindcss/typography'
 
-module.exports = {
-    presets: [preset],
+export default {
     content: [
-        './app/Filament/**/*.php',
-        './resources/views/filament/**/*.blade.php',
-        './vendor/filament/**/*.blade.php',
+        './resources/**/*.blade.php',
+        './src/**/*.php',
     ],
+    darkMode: 'class',
+    theme: {
+        extend: {},
+    },
+    plugins: [forms, typography],
 }

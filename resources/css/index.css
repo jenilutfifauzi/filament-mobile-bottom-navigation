@@ -1,1 +1,6 @@
-@import '../../vendor/filament/filament/resources/css/theme.css';
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* Filament Mobile Bottom Navigation Plugin Styles */
+/* Plugin-specific styles will be added in later stories (Epic 1-3) */
