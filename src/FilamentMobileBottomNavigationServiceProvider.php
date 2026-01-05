@@ -234,6 +234,21 @@ class FilamentMobileBottomNavigationServiceProvider extends PackageServiceProvid
                         return '';
                     }
 
+                    // Don't show on authentication pages (login, register, password reset, etc)
+                    $currentRoute = request()->route()?->getName() ?? '';
+                    $authRoutes = ['login', 'register', 'password.request', 'password.reset', 'password.email'];
+
+                    foreach ($authRoutes as $authRoute) {
+                        if (str_contains($currentRoute, $authRoute)) {
+                            return '';
+                        }
+                    }
+
+                    // Don't show if user is not authenticated
+                    if (! auth()->check()) {
+                        return '';
+                    }
+
                     // Render component using proper view rendering
                     return view('filament-mobile-bottom-navigation::components.mobile-bottom-navigation')->render();
                 }
