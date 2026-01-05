@@ -44,20 +44,35 @@ export default defineConfig({
 
   // Configure projects for major mobile browsers
   projects: [
+    // iOS Safari 16 (iPhone 13)
     {
-      name: 'Mobile Safari',
+      name: 'iOS Safari 16',
       use: {
-        ...devices['iPhone 14 Pro'],
-        // Override viewport for consistency
+        ...devices['iPhone 13'],
         viewport: { width: 390, height: 844 },
+        isMobile: true,
+        hasTouch: true,
+        deviceScaleFactor: 3,
       },
     },
 
+    // iOS Safari 17 (iPhone 14 Pro)
+    {
+      name: 'iOS Safari 17',
+      use: {
+        ...devices['iPhone 14 Pro'],
+        viewport: { width: 393, height: 852 },
+        isMobile: true,
+        hasTouch: true,
+        deviceScaleFactor: 3,
+      },
+    },
+
+    // Chrome Mobile (Pixel 7)
     {
       name: 'Mobile Chrome',
       use: {
         ...devices['Pixel 7'],
-        // Override viewport for consistency
         viewport: { width: 412, height: 915 },
       },
     },
