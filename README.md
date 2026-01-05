@@ -1,13 +1,10 @@
-# This is my package filament-mobile-bottom-navigation
+# Filament Mobile Bottom Navigation
 
+[![CI](https://github.com/jenilutfifauzi/filament-mobile-bottom-navigation/actions/workflows/ci.yml/badge.svg)](https://github.com/jenilutfifauzi/filament-mobile-bottom-navigation/actions/workflows/ci.yml)
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/jenilutfifauzi/filament-mobile-bottom-navigation.svg?style=flat-square)](https://packagist.org/packages/jenilutfifauzi/filament-mobile-bottom-navigation)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/jenilutfifauzi/filament-mobile-bottom-navigation/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/jenilutfifauzi/filament-mobile-bottom-navigation/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/jenilutfifauzi/filament-mobile-bottom-navigation/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/jenilutfifauzi/filament-mobile-bottom-navigation/actions?query=workflow%3A"Fix+PHP+code+styling"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/jenilutfifauzi/filament-mobile-bottom-navigation.svg?style=flat-square)](https://packagist.org/packages/jenilutfifauzi/filament-mobile-bottom-navigation)
 
-
-
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+Mobile bottom navigation bar plugin for Filament admin panels. Transforms mobile navigation from hamburger menu pattern to bottom navigation bar - the standard pattern used in native mobile apps.
 
 ## Installation
 
@@ -55,6 +52,18 @@ echo $filamentMobileBottomNavigation->echoPhrase('Hello, Jenilutfifauzi!');
 ```bash
 composer test
 ```
+
+## Continuous Integration
+
+This plugin uses GitHub Actions for automated testing and build verification. On every push and pull request, the CI workflow runs:
+
+- **Laravel Pint** - Code style validation (PSR-12)
+- **PHPUnit/Pest** - Unit and feature tests
+- **npm build** - Asset compilation verification
+
+The CI workflow tests against PHP 8.0, 8.1, and 8.2 with Laravel 10.x to ensure compatibility across supported versions.
+
+View the CI status and workflow runs in the [Actions tab](https://github.com/jenilutfifauzi/filament-mobile-bottom-navigation/actions).
 
 ## Changelog
 
