@@ -61,7 +61,11 @@ class FilamentMobileBottomNavigationServiceProvider extends PackageServiceProvid
         }
     }
 
-    public function packageRegistered(): void {}
+    public function packageRegistered(): void
+    {
+        // Register Panel macros early - must be done in register() for panel providers to access them
+        $this->registerPanelMacro();
+    }
 
     public function packageBooted(): void
     {
@@ -78,9 +82,6 @@ class FilamentMobileBottomNavigationServiceProvider extends PackageServiceProvid
 
         // Icon Registration
         FilamentIcon::register($this->getIcons());
-
-        // Register Panel macro for optional configuration
-        $this->registerPanelMacro();
 
         // Auto-inject bottom navigation into Filament layouts
         $this->injectBottomNavigationIntoLayouts();
@@ -185,6 +186,23 @@ class FilamentMobileBottomNavigationServiceProvider extends PackageServiceProvid
             // Return for fluent interface
             return $this;
         });
+
+        // Macro untuk check status mobile bottom navigation
+        Panel::macro('isMobileBottomNavigationEnabled', function (): bool {
+            /** @var Panel $this */
+            return property_exists($this, 'mobileBottomNavigationEnabled')
+                ? $this->mobileBottomNavigationEnabled
+                : true; // Default: enabled
+        });
+
+        // Macro untuk get status string (untuk logging/debugging)
+        Panel::macro('getMobileBottomNavigationStatus', function (): string {
+            /** @var Panel $this */
+            $panelId = $this->getId();
+            $enabled = $this->isMobileBottomNavigationEnabled();
+            $status = $enabled ? '✅ ACTIVE' : '❌ DISABLED';
+            return "Mobile Bottom Navigation [{$panelId}]: {$status}";
+        });
     }
 
     /**
@@ -192,18 +210,26 @@ class FilamentMobileBottomNavigationServiceProvider extends PackageServiceProvid
      *
      * Registers a render hook that automatically includes the bottom navigation
      * component in all Filament panels, unless explicitly disabled via the macro.
+     *
+     * Also logs plugin status for debugging purposes.
      */
     protected function injectBottomNavigationIntoLayouts(): void
     {
         Filament::serving(function () {
+            $panel = Filament::getCurrentPanel();
+
+            // Log plugin status for debugging
+            if ($panel && function_exists('logger')) {
+                logger()->debug($panel->getMobileBottomNavigationStatus());
+            }
+
             Filament::registerRenderHook(
                 'panels::body.end',
                 function (): string {
                     $panel = Filament::getCurrentPanel();
 
                     // Check if explicitly disabled via macro
-                    if (property_exists($panel, 'mobileBottomNavigationEnabled') &&
-                        ! $panel->mobileBottomNavigationEnabled) {
+                    if (! $panel->isMobileBottomNavigationEnabled()) {
                         return '';
                     }
 
