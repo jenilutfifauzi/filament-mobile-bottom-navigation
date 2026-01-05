@@ -119,9 +119,9 @@
         min-height: 44px;
         min-width: 44px;
         padding: 0.5rem;
-        color: #374151;
+        color: #6b7280;
         text-decoration: none;
-        transition: background-color 0.2s ease-in-out;
+        transition: all 0.2s ease-in-out;
         position: relative;
         width: 100%;
     }
@@ -140,12 +140,24 @@
     }
 
     .fmbn-nav-item:hover {
-        background-color: #f9fafb;
+        background-color: #f3f4f6;
+        color: #374151;
+    }
+
+    .fmbn-nav-item:hover .fmbn-nav-item__icon {
+        opacity: 1;
     }
 
     .fmbn-nav-item--active {
-        color: #3b82f6;
-        background-color: #f0f9ff;
+        color: #2563eb;
+        background-color: #eff6ff;
+        border-top: 2px solid #2563eb;
+        border-radius: 0.5rem;
+    }
+
+    .fmbn-nav-item--active .fmbn-nav-item__icon {
+        color: #2563eb;
+        font-weight: 600;
     }
 
     .fmbn-nav-item__icon {
@@ -154,6 +166,13 @@
         justify-content: center;
         width: 1.5rem;
         height: 1.5rem;
+        color: inherit;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .fmbn-nav-item__icon--active {
+        color: inherit;
+        font-weight: 600;
     }
 
     .fmbn-nav-item__label {
@@ -193,16 +212,22 @@
     }
 
     html:not(.dark) .fmbn-nav-item {
-        color: #374151 !important;
+        color: #6b7280 !important;
     }
 
     html:not(.dark) .fmbn-nav-item:hover {
-        background-color: #f9fafb !important;
+        background-color: #f3f4f6 !important;
+        color: #374151 !important;
     }
 
     html:not(.dark) .fmbn-nav-item--active {
-        color: #3b82f6 !important;
-        background-color: #f0f9ff !important;
+        color: #2563eb !important;
+        background-color: #eff6ff !important;
+        border-top-color: #2563eb !important;
+    }
+
+    html:not(.dark) .fmbn-nav-item--active .fmbn-nav-item__icon {
+        color: #2563eb !important;
     }
 
     /* Dark mode support - System preference (OS/Browser setting) */
@@ -213,16 +238,22 @@
         }
 
         .fmbn-nav-item {
-            color: #d1d5db;
+            color: #9ca3af;
         }
 
         .fmbn-nav-item:hover {
-            background-color: #111827;
+            background-color: #2d3748;
+            color: #d1d5db;
         }
 
         .fmbn-nav-item--active {
             color: #60a5fa;
             background-color: #1e3a8a;
+            border-top-color: #60a5fa;
+        }
+
+        .fmbn-nav-item--active .fmbn-nav-item__icon {
+            color: #60a5fa;
         }
     }
 
@@ -233,16 +264,22 @@
     }
 
     .dark .fmbn-nav-item {
-        color: #d1d5db !important;
+        color: #9ca3af !important;
     }
 
     .dark .fmbn-nav-item:hover {
-        background-color: #111827 !important;
+        background-color: #2d3748 !important;
+        color: #d1d5db !important;
     }
 
     .dark .fmbn-nav-item--active {
         color: #60a5fa !important;
         background-color: #1e3a8a !important;
+        border-top-color: #60a5fa !important;
+    }
+
+    .dark .fmbn-nav-item--active .fmbn-nav-item__icon {
+        color: #60a5fa !important;
     }
 
     /* High contrast mode */
@@ -283,12 +320,19 @@
                         @endif
                         style="min-width: 44px; min-height: 44px; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;"
                     >
-                        <span class="fmbn-nav-item__icon" aria-hidden="true" style="width: 24px; height: 24px; position: relative; display: flex; align-items: center; justify-content: center;">
+                        <span
+                            class="fmbn-nav-item__icon"
+                            @class([
+                                'fmbn-nav-item__icon--active' => $item->isActive(),
+                            ])
+                            aria-hidden="true"
+                            style="width: 24px; height: 24px; position: relative; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease-in-out;"
+                        >
                             @if ($item->getIcon())
                                 <x-filament::icon
                                     :icon="$item->getIcon()"
                                     class="h-6 w-6"
-                                    style="width: 24px; height: 24px;"
+                                    style="width: 24px; height: 24px; currentColor;"
                                 />
                             @endif
 
