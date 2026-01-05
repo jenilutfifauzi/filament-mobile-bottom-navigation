@@ -179,7 +179,7 @@ class FilamentMobileBottomNavigationServiceProvider extends PackageServiceProvid
      */
     protected function registerPanelMacro(): void
     {
-        Panel::macro('mobileBottomNavigation', function (bool|Closure $condition = true): Panel {
+        Panel::macro('mobileBottomNavigation', function (bool | Closure $condition = true): Panel {
             /** @var Panel $this */
 
             // Resolve closure or use boolean directly
@@ -209,7 +209,7 @@ class FilamentMobileBottomNavigationServiceProvider extends PackageServiceProvid
 
                     // Check if explicitly disabled via macro
                     if (property_exists($panel, 'mobileBottomNavigationEnabled') &&
-                        !$panel->mobileBottomNavigationEnabled) {
+                        ! $panel->mobileBottomNavigationEnabled) {
                         return '';
                     }
 
