@@ -9,14 +9,14 @@ Mobile-first bottom navigation bar for Filament 3.x admin panels with **zero con
 
 ## Features
 
-✨ **Zero Configuration** - Works automatically after `composer require`  
-📱 **Mobile-First Design** - Responsive at 768px breakpoint, pure CSS  
-🎨 **Theme Integration** - Automatically inherits Filament colors and typography  
-🌓 **Dark Mode Support** - Automatic with no additional code  
-🍎 **iOS Safe Area** - Respects notch and home indicator on modern iPhones  
-♿ **Accessible** - WCAG 2.1 Level AA compliant with 44×44px touch targets  
-⚡ **Performant** - Zero layout shift (CLS = 0), <200ms render time  
-🧪 **Thoroughly Tested** - 100+ Playwright browser tests + PHPUnit coverage  
+✨ **Zero Configuration** - Works automatically after `composer require`
+📱 **Mobile-First Design** - Responsive at 768px breakpoint, pure CSS
+🎨 **Theme Integration** - Automatically inherits Filament colors and typography
+🌓 **Dark Mode Support** - Automatic with no additional code
+🍎 **iOS Safe Area** - Respects notch and home indicator on modern iPhones
+♿ **Accessible** - WCAG 2.1 Level AA compliant with 44×44px touch targets
+⚡ **Performant** - Zero layout shift (CLS = 0), <200ms render time
+🧪 **Thoroughly Tested** - 100+ Playwright browser tests + PHPUnit coverage
 
 ## Requirements
 
@@ -227,7 +227,7 @@ After successful installation:
 1. **Customize Theme Colors:**
    ```php
    use Filament\Support\Colors\Color;
-   
+
    $panel->colors(['primary' => Color::Amber])
    ```
 

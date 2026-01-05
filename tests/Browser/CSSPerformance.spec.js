@@ -413,7 +413,7 @@ test.describe('CSS Performance Optimization (Story 6-1)', () => {
 
       // Should have padding for safe area (notch/home indicator)
       const hasSafeAreaSupport =
-        style.paddingBottom.includes('env') || 
+        style.paddingBottom.includes('env') ||
         parseInt(style.paddingBottom) >= 8;
 
       expect(hasSafeAreaSupport || style.paddingBottom !== '0px').toBe(true);

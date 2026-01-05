@@ -40,6 +40,27 @@
         box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.1);
         padding: var(--fmbn-nav-padding-top) 0;
         padding-bottom: calc(var(--fmbn-nav-padding-bottom) + env(safe-area-inset-bottom, 0px));
+        margin: 0;
+        list-style: none;
+    }
+
+    /* Semantic list structure */
+    .fmbn-nav__list {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        gap: 0;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .fmbn-nav__list-item {
+        flex: 1;
+        display: flex;
+        margin: 0;
+        padding: 0;
+        list-style: none;
     }
 
     /* Hide on desktop (no padding needed) */
@@ -75,6 +96,7 @@
         text-decoration: none;
         transition: background-color 0.2s ease-in-out;
         position: relative;
+        width: 100%;
     }
 
     /* Fallback for browsers without flexbox */
@@ -180,37 +202,42 @@
 @if ($navigationItems->isNotEmpty())
     <nav class="fmbn-bottom-nav" role="navigation" aria-label="Mobile bottom navigation"
          style="height: calc(61px + env(safe-area-inset-bottom, 0px));">
-        @foreach ($navigationItems as $item)
-            <a
-                href="{{ $item->getUrl() }}"
-                @class([
-                    'fmbn-nav-item',
-                    'fmbn-nav-item--active' => $item->isActive(),
-                ])
-                @if ($item->isActive())
-                    aria-current="page"
-                @endif
-                style="min-width: 44px; min-height: 44px;"
-            >
-                <span class="fmbn-nav-item__icon" style="width: 24px; height: 24px;">
-                    @svg($item->getIcon(), 'h-6 w-6')
+        <ul class="fmbn-nav__list" style="display: flex; flex-wrap: wrap; width: 100%; gap: 0; margin: 0; padding: 0; list-style: none;">
+            @foreach ($navigationItems as $item)
+                <li class="fmbn-nav__list-item" style="flex: 1; display: flex; margin: 0; padding: 0;">
+                    <a
+                        href="{{ $item->getUrl() }}"
+                        class="fmbn-nav-item"
+                        @class([
+                            'fmbn-nav-item--active' => $item->isActive(),
+                        ])
+                        aria-label="{{ $item->getLabel() }}"
+                        @if ($item->isActive())
+                            aria-current="page"
+                        @endif
+                        style="min-width: 44px; min-height: 44px; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;"
+                    >
+                        <span class="fmbn-nav-item__icon" aria-hidden="true" style="width: 24px; height: 24px;">
+                            @svg($item->getIcon(), 'h-6 w-6')
 
-                    @if ($item->getBadge())
-                        <span
-                            @class([
-                                'fmbn-nav-item__badge',
-                                "fmbn-nav-item__badge--{$item->getBadgeColor()}" => $item->getBadgeColor(),
-                            ])
-                        >
-                            {{ $item->getBadge() }}
+                            @if ($item->getBadge())
+                                <span
+                                    @class([
+                                        'fmbn-nav-item__badge',
+                                        "fmbn-nav-item__badge--{$item->getBadgeColor()}" => $item->getBadgeColor(),
+                                    ])
+                                >
+                                    {{ $item->getBadge() }}
+                                </span>
+                            @endif
                         </span>
-                    @endif
-                </span>
-                <span class="fmbn-nav-item__label" style="font-size: 12px; line-height: 1.2;">
-                    {{ $item->getLabel() }}
-                </span>
-            </a>
-        @endforeach
+                        <span class="fmbn-nav-item__label" style="font-size: 12px; line-height: 1.2;">
+                            {{ $item->getLabel() }}
+                        </span>
+                    </a>
+                </li>
+            @endforeach
+        </ul>
     </nav>
 @endif
 
