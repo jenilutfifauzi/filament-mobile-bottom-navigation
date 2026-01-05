@@ -10,8 +10,10 @@ use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentIcon;
 use Illuminate\Filesystem\Filesystem;
 use Jenilutfifauzi\FilamentMobileBottomNavigation\Commands\FilamentMobileBottomNavigationCommand;
+use Jenilutfifauzi\FilamentMobileBottomNavigation\Components\MobileBottomNavigation;
 use Jenilutfifauzi\FilamentMobileBottomNavigation\Testing\TestsFilamentMobileBottomNavigation;
 use Livewire\Features\SupportTesting\Testable;
+use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -75,6 +77,9 @@ class FilamentMobileBottomNavigationServiceProvider extends PackageServiceProvid
 
         // Icon Registration
         FilamentIcon::register($this->getIcons());
+
+        // Livewire Component Registration
+        Livewire::component('filament-mobile-bottom-navigation', MobileBottomNavigation::class);
 
         // Handle Stubs
         if (app()->runningInConsole()) {
