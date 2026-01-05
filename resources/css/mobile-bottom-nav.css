@@ -46,41 +46,55 @@ body {
  * Navigation Container
  * Fixed to bottom of viewport, full width
  * Fixed height prevents layout shift
+ * Progressive Enhancement: Works in all browsers with fallbacks
  */
 .fmbn-bottom-nav {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    height: var(--fmbn-nav-height); /* Fixed height critical for CLS prevention */
-    z-index: 50; /* Above content (10), below modals (100) */
+    z-index: 50;
 
-    display: flex;
-    justify-content: space-around;
+    /* Fallback: Block layout (IE6+) */
+    display: block;
+    height: var(--fmbn-nav-height);
+    width: 100%;
 
+    /* Fallback colors: Hex values (IE6+) */
+    background-color: #f9fafb;
     background-color: var(--gray-50);
+    border-top: 1px solid #e5e7eb;
     border-top: 1px solid var(--gray-200);
 
-    /* iOS Safe Area Support */
-    /* Bottom padding: prevents clipping by home indicator (34px portrait, 21px landscape) */
+    /* Fallback padding: Fixed value (all browsers) */
+    padding-bottom: 0;
     padding-bottom: env(safe-area-inset-bottom, 0);
-    /* Side padding: prevents clipping by Dynamic Island/notch in landscape mode */
     padding-left: env(safe-area-inset-left, 0);
     padding-right: env(safe-area-inset-right, 0);
+}
+
+/* ============================================
+   PROGRESSIVE ENHANCEMENT: Flexbox Layout
+   Enhanced layout for browsers that support it (IE11+)
+   ============================================ */
+@supports (display: flex) {
+    .fmbn-bottom-nav {
+        display: flex;
+        justify-content: space-around;
+        align-items: stretch;
+    }
 }
 
 /**
  * Navigation Item
  * Flex column layout: icon above label
  * Touch-optimized for mobile devices with minimum 44x44px targets
+ * Progressive Enhancement: Works as block in older browsers, flex in modern
  */
 .fmbn-nav-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.25rem;
-
+    /* Fallback: Block display for older browsers (IE6+) */
+    display: block;
+    flex: 1;
     padding: 0.5rem 0.75rem;
 
     /* Accessibility: Minimum touch target size (WCAG 2.1 Level AA) */
@@ -88,24 +102,33 @@ body {
     min-height: 44px;
 
     text-decoration: none;
+    /* Fallback color: Hex (IE6+) */
+    color: #374151;
     color: var(--gray-700);
 
     /* Touch Optimization */
-    /* Remove 300ms click delay on mobile browsers */
     touch-action: manipulation;
-
-    /* Prevent default tap highlight (we'll use opacity instead) */
     -webkit-tap-highlight-color: transparent;
-
-    /* Prevent text selection during touch */
     user-select: none;
     -webkit-user-select: none;
-
-    /* Prevent iOS callout menu on long press */
     -webkit-touch-callout: none;
 
     /* Smooth transitions for color and background */
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, opacity 0.1s ease;
+}
+
+/* ============================================
+   PROGRESSIVE ENHANCEMENT: Flexbox Item Layout
+   Enhanced flex layout for modern browsers (IE11+)
+   ============================================ */
+@supports (display: flex) {
+    .fmbn-nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.25rem;
+    }
 }
 
 /**
@@ -145,9 +168,14 @@ body {
  * Navigation Item - Active State
  * Indicates current page / active item
  * Uses primary color from Filament theme
+ * Progressive Enhancement: Uses fallback hex color first, then CSS variable
  */
 .fmbn-nav-item--active {
+    /* Fallback color: Hex (IE6+) */
+    color: #3b82f6;
     color: var(--primary-600);
+    /* Fallback background color: Hex (IE6+) */
+    background-color: #eff6ff;
     background-color: var(--primary-50);
 }
 
@@ -328,17 +356,26 @@ body {
 /**
  * Dark Mode Support
  * Navigation items in dark mode
+ * Progressive Enhancement: Fallback colors with CSS variables
  */
 .dark .fmbn-nav-item {
+    /* Fallback color: Hex (IE6+) */
+    color: #9ca3af;
     color: var(--gray-400);
 }
 
 .dark .fmbn-nav-item--active {
+    /* Fallback color: Hex (IE6+) */
+    color: #60a5fa;
     color: var(--primary-400);
+    /* Fallback background color: Hex (IE6+) */
+    background-color: #0f172a;
     background-color: var(--primary-950);
 }
 
 .dark .fmbn-nav-item:focus-visible {
+    /* Fallback color: Hex (IE6+) */
+    outline-color: #60a5fa;
     outline-color: var(--primary-400);
 }
 
@@ -390,5 +427,20 @@ body {
     .fmbn-nav-item--active {
         background-color: Highlight;
         color: HighlightText;
+    }
+}
+
+/* ============================================
+   PRINT STYLES
+   Hide navigation when printing
+   ============================================ */
+
+@media print {
+    .fmbn-bottom-nav {
+        display: none;
+    }
+
+    body {
+        padding-bottom: 0;
     }
 }
