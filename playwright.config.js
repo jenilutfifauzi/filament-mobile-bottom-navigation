@@ -68,12 +68,39 @@ export default defineConfig({
       },
     },
 
-    // Chrome Mobile (Pixel 7)
+    // Chrome Mobile (Pixel 5)
     {
-      name: 'Mobile Chrome',
+      name: 'Chrome Mobile Pixel 5',
       use: {
-        ...devices['Pixel 7'],
-        viewport: { width: 412, height: 915 },
+        ...devices['Pixel 5'],
+        viewport: { width: 393, height: 851 },
+        isMobile: true,
+        hasTouch: true,
+        deviceScaleFactor: 2.75,
+      },
+    },
+
+    // Chrome Mobile (Galaxy S21)
+    {
+      name: 'Chrome Mobile Galaxy S21',
+      use: {
+        ...devices['Galaxy S21'],
+        viewport: { width: 360, height: 800 },
+        isMobile: true,
+        hasTouch: true,
+        deviceScaleFactor: 3,
+      },
+    },
+
+    // Chrome Mobile (Pixel 5 Landscape)
+    {
+      name: 'Chrome Mobile Landscape',
+      use: {
+        ...devices['Pixel 5'],
+        viewport: { width: 851, height: 393 },
+        isMobile: true,
+        hasTouch: true,
+        deviceScaleFactor: 2.75,
       },
     },
   ],
