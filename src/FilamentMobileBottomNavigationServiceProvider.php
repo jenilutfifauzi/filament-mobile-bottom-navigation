@@ -2,6 +2,9 @@
 
 namespace Jenilutfifauzi\FilamentMobileBottomNavigation;
 
+use Closure;
+use Filament\Facades\Filament;
+use Filament\Panel;
 use Filament\Support\Assets\AlpineComponent;
 use Filament\Support\Assets\Asset;
 use Filament\Support\Assets\Css;
@@ -9,6 +12,7 @@ use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentIcon;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Blade;
 use Jenilutfifauzi\FilamentMobileBottomNavigation\Commands\FilamentMobileBottomNavigationCommand;
 use Jenilutfifauzi\FilamentMobileBottomNavigation\Components\MobileBottomNavigation;
 use Jenilutfifauzi\FilamentMobileBottomNavigation\Testing\TestsFilamentMobileBottomNavigation;
@@ -80,6 +84,12 @@ class FilamentMobileBottomNavigationServiceProvider extends PackageServiceProvid
 
         // Livewire Component Registration
         Livewire::component('filament-mobile-bottom-navigation', MobileBottomNavigation::class);
+
+        // Register Panel macro for optional configuration
+        $this->registerPanelMacro();
+
+        // Auto-inject bottom navigation into Filament layouts
+        $this->injectBottomNavigationIntoLayouts();
 
         // Handle Stubs
         if (app()->runningInConsole()) {
@@ -153,5 +163,60 @@ class FilamentMobileBottomNavigationServiceProvider extends PackageServiceProvid
         return [
             'create_filament-mobile-bottom-navigation_table',
         ];
+    }
+
+    /**
+     * Register Panel macro for optional configuration
+     * 
+     * Allows developers to optionally configure the mobile bottom navigation
+     * through Filament's Panel configuration, while maintaining zero-config by default.
+     * 
+     * Usage:
+     *   $panel->mobileBottomNavigation()              // Explicitly enable (default)
+     *   $panel->mobileBottomNavigation(true)          // Explicitly enable
+     *   $panel->mobileBottomNavigation(false)         // Disable for this panel
+     *   $panel->mobileBottomNavigation(fn() => ...) // Conditional enable
+     */
+    protected function registerPanelMacro(): void
+    {
+        Panel::macro('mobileBottomNavigation', function (bool|Closure $condition = true): Panel {
+            /** @var Panel $this */
+            
+            // Resolve closure or use boolean directly
+            $enabled = value($condition);
+            
+            // Store configuration on panel instance
+            $this->mobileBottomNavigationEnabled = $enabled;
+            
+            // Return for fluent interface
+            return $this;
+        });
+    }
+
+    /**
+     * Auto-inject mobile bottom navigation into Filament layouts
+     * 
+     * Registers a render hook that automatically includes the bottom navigation
+     * component in all Filament panels, unless explicitly disabled via the macro.
+     */
+    protected function injectBottomNavigationIntoLayouts(): void
+    {
+        Filament::serving(function () {
+            Filament::registerRenderHook(
+                'panels::body.end',
+                function (): string {
+                    $panel = Filament::getCurrentPanel();
+                    
+                    // Check if explicitly disabled via macro
+                    if (property_exists($panel, 'mobileBottomNavigationEnabled') && 
+                        !$panel->mobileBottomNavigationEnabled) {
+                        return '';
+                    }
+                    
+                    // Render component (enabled by default or explicitly enabled)
+                    return Blade::render('<livewire:filament-mobile-bottom-navigation />');
+                }
+            );
+        });
     }
 }
