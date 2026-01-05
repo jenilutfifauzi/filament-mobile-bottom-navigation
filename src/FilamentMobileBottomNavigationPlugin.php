@@ -1,15 +1,15 @@
 <?php
 
-namespace VendorName\Skeleton;
+namespace Jenilutfifauzi\FilamentMobileBottomNavigation;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
 
-class SkeletonPlugin implements Plugin
+class FilamentMobileBottomNavigationPlugin implements Plugin
 {
     public function getId(): string
     {
-        return 'skeleton';
+        return 'filament-mobile-bottom-navigation';
     }
 
     public function register(Panel $panel): void

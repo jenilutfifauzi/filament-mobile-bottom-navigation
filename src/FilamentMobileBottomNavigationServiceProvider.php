@@ -1,6 +1,6 @@
 <?php
 
-namespace VendorName\Skeleton;
+namespace Jenilutfifauzi\FilamentMobileBottomNavigation;
 
 use Filament\Support\Assets\AlpineComponent;
 use Filament\Support\Assets\Asset;
@@ -13,14 +13,14 @@ use Livewire\Features\SupportTesting\Testable;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use VendorName\Skeleton\Commands\SkeletonCommand;
-use VendorName\Skeleton\Testing\TestsSkeleton;
+use Jenilutfifauzi\FilamentMobileBottomNavigation\Commands\FilamentMobileBottomNavigationCommand;
+use Jenilutfifauzi\FilamentMobileBottomNavigation\Testing\TestsFilamentMobileBottomNavigation;
 
-class SkeletonServiceProvider extends PackageServiceProvider
+class FilamentMobileBottomNavigationServiceProvider extends PackageServiceProvider
 {
-    public static string $name = 'skeleton';
+    public static string $name = 'filament-mobile-bottom-navigation';
 
-    public static string $viewNamespace = 'skeleton';
+    public static string $viewNamespace = 'filament-mobile-bottom-navigation';
 
     public function configurePackage(Package $package): void
     {
@@ -36,7 +36,7 @@ class SkeletonServiceProvider extends PackageServiceProvider
                     ->publishConfigFile()
                     ->publishMigrations()
                     ->askToRunMigrations()
-                    ->askToStarRepoOnGitHub(':vendor_slug/:package_slug');
+                    ->askToStarRepoOnGitHub('jenilutfifauzi/filament-mobile-bottom-navigation');
             });
 
         $configFileName = $package->shortName();
@@ -80,18 +80,18 @@ class SkeletonServiceProvider extends PackageServiceProvider
         if (app()->runningInConsole()) {
             foreach (app(Filesystem::class)->files(__DIR__ . '/../stubs/') as $file) {
                 $this->publishes([
-                    $file->getRealPath() => base_path("stubs/skeleton/{$file->getFilename()}"),
-                ], 'skeleton-stubs');
+                    $file->getRealPath() => base_path("stubs/filament-mobile-bottom-navigation/{$file->getFilename()}"),
+                ], 'filament-mobile-bottom-navigation-stubs');
             }
         }
 
         // Testing
-        Testable::mixin(new TestsSkeleton);
+        Testable::mixin(new TestsFilamentMobileBottomNavigation);
     }
 
     protected function getAssetPackageName(): ?string
     {
-        return ':vendor_slug/:package_slug';
+        return 'jenilutfifauzi/filament-mobile-bottom-navigation';
     }
 
     /**
@@ -100,9 +100,9 @@ class SkeletonServiceProvider extends PackageServiceProvider
     protected function getAssets(): array
     {
         return [
-            // AlpineComponent::make('skeleton', __DIR__ . '/../resources/dist/components/skeleton.js'),
-            Css::make('skeleton-styles', __DIR__ . '/../resources/dist/skeleton.css'),
-            Js::make('skeleton-scripts', __DIR__ . '/../resources/dist/skeleton.js'),
+            // AlpineComponent::make('filament-mobile-bottom-navigation', __DIR__ . '/../resources/dist/components/filament-mobile-bottom-navigation.js'),
+            Css::make('filament-mobile-bottom-navigation-styles', __DIR__ . '/../resources/dist/filament-mobile-bottom-navigation.css'),
+            Js::make('filament-mobile-bottom-navigation-scripts', __DIR__ . '/../resources/dist/filament-mobile-bottom-navigation.js'),
         ];
     }
 
@@ -112,7 +112,7 @@ class SkeletonServiceProvider extends PackageServiceProvider
     protected function getCommands(): array
     {
         return [
-            SkeletonCommand::class,
+            FilamentMobileBottomNavigationCommand::class,
         ];
     }
 
@@ -146,7 +146,7 @@ class SkeletonServiceProvider extends PackageServiceProvider
     protected function getMigrations(): array
     {
         return [
-            'create_skeleton_table',
+            'create_filament-mobile-bottom-navigation_table',
         ];
     }
 }
