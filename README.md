@@ -49,8 +49,66 @@ echo $filamentMobileBottomNavigation->echoPhrase('Hello, Jenilutfifauzi!');
 
 ## Testing
 
+### PHP Tests
+
 ```bash
 composer test
+```
+
+### Browser Testing
+
+This plugin uses Playwright for automated browser testing with mobile device emulation and accessibility scanning.
+
+**Run all browser tests:**
+```bash
+npm run test:browser
+```
+
+**Run tests in headed mode (see the browser):**
+```bash
+npm run test:browser:headed
+```
+
+**Run accessibility tests only:**
+```bash
+npm run test:a11y
+```
+
+**Run tests for specific device:**
+```bash
+npx playwright test --project="Mobile Safari"
+npx playwright test --project="Mobile Chrome"
+```
+
+**View test report:**
+```bash
+npx playwright show-report
+```
+
+**Test Configuration:**
+- **Mobile Safari:** iPhone 14 Pro (390x844, WebKit engine)
+- **Mobile Chrome:** Pixel 7 (412x915, Chromium engine)
+- **Accessibility:** WCAG 2.1 Level AA via axe-core
+- **Test location:** `tests/Browser/`
+
+### Writing Browser Tests
+
+Example test with accessibility scanning:
+
+```javascript
+import { test, expect } from '@playwright/test'
+import AxeBuilder from '@axe-core/playwright'
+
+test('navigation is accessible', async ({ page }) => {
+  await page.goto('/')
+  
+  // Run accessibility scan
+  const accessibilityScanResults = await new AxeBuilder({ page })
+    .withTags(['wcag2a', 'wcag2aa'])
+    .analyze()
+  
+  expect(accessibilityScanResults.violations).toEqual([])
+})
 ```
 
 ## Continuous Integration

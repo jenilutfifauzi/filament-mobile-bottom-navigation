@@ -12,3 +12,8 @@ phpunit.xml
 phpstan.neon
 testbench.yaml
 vendor
+
+# Playwright
+test-results/
+playwright-report/
+playwright/.cache/

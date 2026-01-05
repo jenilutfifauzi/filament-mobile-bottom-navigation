@@ -8,10 +8,15 @@
         "build:scripts": "node bin/build.js",
         "purge": "filament-purge -i resources/dist/filament-mobile-bottom-navigation.css -o resources/dist/filament-mobile-bottom-navigation.css -v 3.x",
         "dev": "npm-run-all --parallel dev:*",
-        "build": "npm-run-all build:*"
+        "build": "npm-run-all build:*",
+        "test:browser": "playwright test",
+        "test:browser:headed": "playwright test --headed",
+        "test:a11y": "playwright test --grep @a11y"
     },
     "devDependencies": {
         "@awcodes/filament-plugin-purge": "^1.1.1",
+        "@axe-core/playwright": "^4.11.0",
+        "@playwright/test": "^1.57.0",
         "@tailwindcss/forms": "^0.5.4",
         "@tailwindcss/typography": "^0.5.9",
         "autoprefixer": "^10.4.14",
