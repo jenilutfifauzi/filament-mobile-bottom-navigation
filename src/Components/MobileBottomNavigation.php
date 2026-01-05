@@ -16,6 +16,9 @@ class MobileBottomNavigation extends Component
      * collection if no panel is currently active, ensuring graceful
      * degradation without errors.
      *
+     * Filters out NavigationGroup objects and extracts only NavigationItems,
+     * including items within groups.
+     *
      * @return Collection<int, \Filament\Navigation\NavigationItem>
      */
     protected function getNavigationItems(): Collection
@@ -26,7 +29,22 @@ class MobileBottomNavigation extends Component
             return collect([]);
         }
 
-        return collect($panel->getNavigation());
+        $navigation = collect($panel->getNavigation());
+
+        return $navigation->flatMap(function ($item) {
+            // If it's a NavigationGroup, extract its items
+            if ($item instanceof \Filament\Navigation\NavigationGroup) {
+                return $item->getItems();
+            }
+
+            // If it's a NavigationItem, return it
+            if ($item instanceof \Filament\Navigation\NavigationItem) {
+                return [$item];
+            }
+
+            // Skip unknown types
+            return [];
+        });
     }
 
     /**

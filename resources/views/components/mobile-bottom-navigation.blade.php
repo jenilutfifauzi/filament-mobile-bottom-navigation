@@ -7,6 +7,33 @@
     @var \Illuminate\Support\Collection<int, \Filament\Navigation\NavigationItem> $navigationItems
 --}}
 
+@php
+    use Filament\Facades\Filament;
+
+    $panel = Filament::getCurrentPanel();
+
+    if (!$panel) {
+        $navigationItems = collect([]);
+    } else {
+        $navigation = collect($panel->getNavigation());
+
+        $navigationItems = $navigation->flatMap(function ($item) {
+            // If it's a NavigationGroup, extract its items
+            if ($item instanceof \Filament\Navigation\NavigationGroup) {
+                return $item->getItems();
+            }
+
+            // If it's a NavigationItem, return it
+            if ($item instanceof \Filament\Navigation\NavigationItem) {
+                return [$item];
+            }
+
+            // Skip unknown types
+            return [];
+        });
+    }
+@endphp
+
 <style>
     /* CSS Variables for CLS prevention */
     :root {
@@ -207,6 +234,7 @@
                 <li class="fmbn-nav__list-item" style="flex: 1; display: flex; margin: 0; padding: 0;">
                     <a
                         href="{{ $item->getUrl() }}"
+                        wire:navigate
                         class="fmbn-nav-item"
                         @class([
                             'fmbn-nav-item--active' => $item->isActive(),
@@ -217,8 +245,14 @@
                         @endif
                         style="min-width: 44px; min-height: 44px; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;"
                     >
-                        <span class="fmbn-nav-item__icon" aria-hidden="true" style="width: 24px; height: 24px;">
-                            @svg($item->getIcon(), 'h-6 w-6')
+                        <span class="fmbn-nav-item__icon" aria-hidden="true" style="width: 24px; height: 24px; position: relative; display: flex; align-items: center; justify-content: center;">
+                            @if ($item->getIcon())
+                                <x-filament::icon
+                                    :icon="$item->getIcon()"
+                                    class="h-6 w-6"
+                                    style="width: 24px; height: 24px;"
+                                />
+                            @endif
 
                             @if ($item->getBadge())
                                 <span
@@ -226,6 +260,7 @@
                                         'fmbn-nav-item__badge',
                                         "fmbn-nav-item__badge--{$item->getBadgeColor()}" => $item->getBadgeColor(),
                                     ])
+                                    style="position: absolute; top: -4px; right: -4px;"
                                 >
                                     {{ $item->getBadge() }}
                                 </span>

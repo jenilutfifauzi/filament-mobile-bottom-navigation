@@ -14,10 +14,8 @@ use Filament\Support\Facades\FilamentIcon;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Blade;
 use Jenilutfifauzi\FilamentMobileBottomNavigation\Commands\FilamentMobileBottomNavigationCommand;
-use Jenilutfifauzi\FilamentMobileBottomNavigation\Components\MobileBottomNavigation;
 use Jenilutfifauzi\FilamentMobileBottomNavigation\Testing\TestsFilamentMobileBottomNavigation;
 use Livewire\Features\SupportTesting\Testable;
-use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -81,9 +79,6 @@ class FilamentMobileBottomNavigationServiceProvider extends PackageServiceProvid
 
         // Icon Registration
         FilamentIcon::register($this->getIcons());
-
-        // Livewire Component Registration
-        Livewire::component('filament-mobile-bottom-navigation', MobileBottomNavigation::class);
 
         // Register Panel macro for optional configuration
         $this->registerPanelMacro();
@@ -213,8 +208,8 @@ class FilamentMobileBottomNavigationServiceProvider extends PackageServiceProvid
                         return '';
                     }
 
-                    // Render component (enabled by default or explicitly enabled)
-                    return Blade::render('<livewire:filament-mobile-bottom-navigation />');
+                    // Render component using proper view rendering
+                    return view('filament-mobile-bottom-navigation::components.mobile-bottom-navigation')->render();
                 }
             );
         });
