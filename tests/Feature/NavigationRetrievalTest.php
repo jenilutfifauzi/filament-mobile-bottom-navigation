@@ -5,7 +5,6 @@ namespace Jenilutfifauzi\FilamentMobileBottomNavigation\Tests\Feature;
 use Filament\Facades\Filament;
 use Filament\Navigation\NavigationItem;
 use Filament\Panel;
-use Illuminate\Database\Eloquent\Model;
 
 /**
  * Story 8.3: Panel Navigation Retrieval Tests
@@ -41,6 +40,7 @@ class NavigationRetrievalTest extends TestCase
 
         if (count($panels) === 0) {
             $this->assertTrue(true);
+
             return;
         }
 
@@ -61,6 +61,7 @@ class NavigationRetrievalTest extends TestCase
 
         if (count($panels) === 0) {
             $this->assertTrue(true);
+
             return;
         }
 
@@ -76,6 +77,7 @@ class NavigationRetrievalTest extends TestCase
 
         if (count($panels) === 0) {
             $this->assertTrue(true);
+
             return;
         }
 

@@ -3,8 +3,8 @@
 namespace Jenilutfifauzi\FilamentMobileBottomNavigation\Tests\Feature;
 
 use Illuminate\Support\Facades\File;
-use Jenilutfifauzi\FilamentMobileBottomNavigation\FilamentMobileBottomNavigationServiceProvider;
 use Jenilutfifauzi\FilamentMobileBottomNavigation\Components\MobileBottomNavigation;
+use Jenilutfifauzi\FilamentMobileBottomNavigation\FilamentMobileBottomNavigationServiceProvider;
 use Livewire\Livewire;
 
 /**

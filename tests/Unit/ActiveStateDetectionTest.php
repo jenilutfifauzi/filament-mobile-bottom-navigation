@@ -59,6 +59,7 @@ class ActiveStateDetectionTest extends TestCase
         foreach ($items as $item) {
             if ($item->getUrl() === $currentUrl) {
                 $activeItem = $item;
+
                 break;
             }
         }
