@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Touch Target Size - WCAG 2.1 AAA Compliance', () => {
   const testUrl = 'http://localhost/admin';
-  
+
   const viewports = [
     { width: 320, height: 568, name: 'iPhone SE' },
     { width: 375, height: 667, name: 'iPhone 8' },
@@ -111,10 +111,10 @@ test.describe('Touch Target Size - WCAG 2.1 AAA Compliance', () => {
       if (horizontalOverlap && verticalOverlap) {
         // Adjacent items in flex layout may share edges, which is acceptable
         // As long as clickable areas don't overlap
-        const edgeTouch = 
+        const edgeTouch =
           (currentBox.x + currentBox.width) === nextBox.x ||
           currentBox.x === (nextBox.x + nextBox.width);
-        
+
         expect(edgeTouch).toBe(true);
       }
     }

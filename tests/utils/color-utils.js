@@ -1,6 +1,6 @@
 /**
  * Color Contrast Utility Functions
- * 
+ *
  * Implements WCAG 2.1 color contrast ratio calculations
  * Using relative luminance formula
  */
@@ -8,7 +8,7 @@
 /**
  * Parse RGB color string to {r, g, b} object
  * Handles both rgb() and rgba() formats
- * 
+ *
  * @param {string} colorString - RGB color string (e.g., "rgb(55, 65, 81)" or "rgba(55, 65, 81, 1)")
  * @returns {Object} Color object with r, g, b properties
  */
@@ -42,7 +42,7 @@ export function parseColor(colorString) {
 /**
  * Calculate relative luminance according to WCAG formula
  * https://www.w3.org/TR/WCAG21/#dfn-relative-luminance
- * 
+ *
  * @param {string} color - RGB color string or hex
  * @returns {number} Relative luminance value (0-1)
  */
@@ -67,10 +67,10 @@ export function relativeLuminance(color) {
  * Calculate contrast ratio between two colors
  * According to WCAG 2.1 formula
  * https://www.w3.org/TR/WCAG21/#dfn-contrast-ratio
- * 
+ *
  * Formula: (L1 + 0.05) / (L2 + 0.05)
  * Where L1 is the lighter color and L2 is the darker color
- * 
+ *
  * @param {string} color1 - First RGB color string
  * @param {string} color2 - Second RGB color string
  * @returns {number} Contrast ratio (1-21)
@@ -89,7 +89,7 @@ export function contrastRatio(color1, color2) {
 
 /**
  * Check if contrast ratio meets WCAG 2.1 Level AA for normal text
- * 
+ *
  * @param {string} foreground - Foreground color
  * @param {string} background - Background color
  * @returns {boolean} True if >= 4.5:1 contrast
@@ -101,7 +101,7 @@ export function meetsWCAGAAText(foreground, background) {
 
 /**
  * Check if contrast ratio meets WCAG 2.1 Level AA for large text or UI components
- * 
+ *
  * @param {string} foreground - Foreground color
  * @param {string} background - Background color
  * @returns {boolean} True if >= 3:1 contrast
@@ -113,7 +113,7 @@ export function meetsWCAGAAComponent(foreground, background) {
 
 /**
  * Check if contrast ratio meets WCAG 2.1 Level AAA for normal text
- * 
+ *
  * @param {string} foreground - Foreground color
  * @param {string} background - Background color
  * @returns {boolean} True if >= 7:1 contrast
@@ -125,7 +125,7 @@ export function meetsWCAGAAAText(foreground, background) {
 
 /**
  * Check if contrast ratio meets WCAG 2.1 Level AAA for large text or UI components
- * 
+ *
  * @param {string} foreground - Foreground color
  * @param {string} background - Background color
  * @returns {boolean} True if >= 4.5:1 contrast
@@ -137,7 +137,7 @@ export function meetsWCAGAAAComponent(foreground, background) {
 
 /**
  * Format contrast ratio for display
- * 
+ *
  * @param {number} ratio - Contrast ratio
  * @returns {string} Formatted ratio (e.g., "4.5:1")
  */
@@ -147,7 +147,7 @@ export function formatRatio(ratio) {
 
 /**
  * Check contrast against WCAG standards and return result object
- * 
+ *
  * @param {string} foreground - Foreground color
  * @param {string} background - Background color
  * @returns {Object} Result object with ratio and compliance levels
