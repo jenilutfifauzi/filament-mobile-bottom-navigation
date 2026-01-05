@@ -22,7 +22,7 @@
             >
                 <span class="fmbn-nav-item__icon">
                     @svg($item->getIcon(), 'h-6 w-6')
-                    
+
                     @if ($item->getBadge())
                         <span
                             @class([

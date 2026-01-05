@@ -1,10 +1,42 @@
 /**
  * Filament Mobile Bottom Navigation
  * Mobile-First CSS Architecture
- * 
+ *
  * Default styles: Mobile (< 768px) - bottom nav visible
  * Desktop styles: ≥ 768px - bottom nav hidden
  */
+
+/* ============================================
+   CSS VARIABLES
+   ============================================ */
+
+/**
+ * Navigation Height Calculation:
+ * - Icon: 24px (1.5rem)
+ * - Icon margin-bottom: 4px (0.25rem)
+ * - Label line-height: 16px (1rem)
+ * - Vertical padding: 12px × 2 = 24px (0.75rem × 2)
+ * - Border-top: 1px
+ * - Safe area: 0-34px (env(safe-area-inset-bottom)) - handled separately
+ * Total: 69px (base height without safe area)
+ */
+:root {
+    --fmbn-nav-height: 69px;
+}
+
+/* ============================================
+   LAYOUT SHIFT PREVENTION
+   Reserve space for bottom navigation
+   ============================================ */
+
+/**
+ * Body Padding (Mobile)
+ * Prevents content jump when navigation loads
+ * Ensures CLS (Cumulative Layout Shift) = 0
+ */
+body {
+    padding-bottom: calc(var(--fmbn-nav-height) + env(safe-area-inset-bottom, 0));
+}
 
 /* ============================================
    MOBILE-FIRST STYLES (Default - No Media Query)
@@ -13,20 +45,22 @@
 /**
  * Navigation Container
  * Fixed to bottom of viewport, full width
+ * Fixed height prevents layout shift
  */
 .fmbn-bottom-nav {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
+    height: var(--fmbn-nav-height); /* Fixed height critical for CLS prevention */
     z-index: 50; /* Above content (10), below modals (100) */
-    
+
     display: flex;
     justify-content: space-around;
-    
+
     background-color: var(--gray-50);
     border-top: 1px solid var(--gray-200);
-    
+
     /* iOS Safe Area Support - prevents clipping by home indicator */
     padding-bottom: env(safe-area-inset-bottom, 0);
 }
@@ -40,16 +74,16 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    
+
     padding: 0.75rem 1rem;
-    
+
     /* Accessibility: Minimum touch target size (iOS HIG) */
     min-width: 44px;
     min-height: 44px;
-    
+
     text-decoration: none;
     color: var(--gray-700);
-    
+
     transition: color 0.2s ease, background-color 0.2s ease;
 }
 
@@ -85,7 +119,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    
+
     width: 1.5rem; /* 24px - standard icon size */
     height: 1.5rem;
     margin-bottom: 0.25rem;
@@ -120,19 +154,19 @@
     position: absolute;
     top: -0.25rem;
     right: -0.5rem;
-    
+
     display: flex;
     align-items: center;
     justify-content: center;
-    
+
     min-width: 1.25rem;
     height: 1.25rem;
     padding: 0.125rem 0.375rem;
-    
+
     font-size: 0.625rem; /* 10px */
     font-weight: 600;
     line-height: 1;
-    
+
     color: white;
     background-color: var(--danger-600);
     border-radius: 9999px; /* Full circle */
@@ -166,9 +200,14 @@
 /* ============================================
    DESKTOP STYLES (≥ 768px)
    Hide bottom navigation when sidebar is visible
+   Remove body padding to restore full height
    ============================================ */
 
 @media (min-width: 768px) {
+    body {
+        padding-bottom: 0; /* Remove reserved space on desktop */
+    }
+    
     .fmbn-bottom-nav {
         display: none;
     }
