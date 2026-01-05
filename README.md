@@ -27,13 +27,225 @@ Mobile-first bottom navigation bar for Filament 3.x admin panels with **zero con
 
 ## Installation
 
-Install the package via Composer:
+### Step 1: Install via Composer
+
+Install the package using Composer:
 
 ```bash
 composer require jenilutfifauzi/filament-mobile-bottom-navigation
 ```
 
-**That's it!** The plugin works immediately with zero configuration.
+### Step 2: Verify Installation
+
+No additional configuration needed! The plugin auto-registers via Laravel's package discovery.
+
+Verify the service provider is loaded:
+
+```bash
+php artisan package:discover
+```
+
+Expected output:
+```
+Discovered Package: jenilutfifauzi/filament-mobile-bottom-navigation
+Provider: Jenilutfifauzi\FilamentMobileBottomNavigation\FilamentMobileBottomNavigationServiceProvider
+```
+
+### Step 3: Test Mobile Navigation
+
+1. Start your Laravel development server:
+   ```bash
+   php artisan serve
+   ```
+
+2. Open your Filament admin panel:
+   ```
+   http://localhost:8000/admin
+   ```
+
+3. Open browser DevTools (F12) and toggle responsive mode (Ctrl+Shift+M / Cmd+Shift+M)
+
+4. Set viewport to iPhone 14 (390px width)
+
+5. You should see the bottom navigation bar appear automatically ✨
+
+### Optional: Asset Publishing
+
+If you need to customize CSS (not typically needed - use CSS variables instead):
+
+```bash
+php artisan vendor:publish --tag=filament-mobile-bottom-navigation-assets
+```
+
+Assets will be copied to `public/vendor/filament-mobile-bottom-navigation/`
+
+## Verification Checklist
+
+After installation, verify these features work:
+
+### ✅ Installation Verified
+
+- [ ] `composer require` completed without errors
+- [ ] Service provider appears in `php artisan package:discover`
+- [ ] No manual configuration needed
+
+### ✅ Mobile Navigation Appears
+
+- [ ] Bottom navigation visible at viewport width < 768px
+- [ ] Navigation hidden at viewport width ≥ 768px
+- [ ] All panel navigation items displayed
+- [ ] Icons and labels both visible
+
+### ✅ Theme Integration Works
+
+- [ ] Navigation colors match panel's primary color
+- [ ] Dark mode toggle changes navigation colors
+- [ ] Custom fonts apply to navigation labels
+- [ ] Active state highlights current page
+
+### ✅ Responsive Behavior
+
+- [ ] Navigation shows on iPhone viewport (390px)
+- [ ] Navigation hides on iPad viewport (768px)
+- [ ] Orientation change handled smoothly
+- [ ] No layout shift during page load
+
+### ✅ iOS Features (if testing on iPhone)
+
+- [ ] Safe area padding above home indicator
+- [ ] Navigation items fully tappable
+- [ ] Notch/Dynamic Island doesn't cover content
+
+## Configuration (Optional)
+
+### Zero-Config Default
+
+By default, the mobile bottom navigation works automatically:
+
+```php
+// app/Providers/Filament/AdminPanelProvider.php
+
+use Filament\Panel;
+
+class AdminPanelProvider extends PanelProvider
+{
+    public function panel(Panel $panel): Panel
+    {
+        return $panel
+            ->id('admin')
+            ->path('admin')
+            ->login()
+            // Mobile navigation works automatically - no config needed!
+    }
+}
+```
+
+### Disable for Specific Panel
+
+```php
+return $panel
+    ->id('internal')
+    ->path('internal')
+    ->mobileBottomNavigation(false) // Disable mobile nav
+```
+
+### Conditional Enabling
+
+```php
+return $panel
+    ->id('admin')
+    ->mobileBottomNavigation(
+        fn (): bool => auth()->user()?->prefers_mobile_nav ?? true
+    )
+```
+
+### Multi-Panel Setup
+
+```php
+// Admin Panel - Mobile nav enabled (default)
+class AdminPanelProvider extends PanelProvider
+{
+    public function panel(Panel $panel): Panel
+    {
+        return $panel->id('admin')->path('admin')
+    }
+}
+
+// Internal Panel - Mobile nav disabled
+class InternalPanelProvider extends PanelProvider
+{
+    public function panel(Panel $panel): Panel
+    {
+        return $panel->id('internal')->mobileBottomNavigation(false)
+    }
+}
+```
+
+## Troubleshooting Installation
+
+### "Package not found"
+
+```bash
+composer clear-cache
+composer require jenilutfifauzi/filament-mobile-bottom-navigation
+```
+
+### Service provider not loading
+
+```bash
+php artisan package:discover
+php artisan optimize:clear
+```
+
+If auto-discovery fails, manually register in `config/app.php`:
+
+```php
+'providers' => [
+    // ...
+    Jenilutfifauzi\FilamentMobileBottomNavigation\FilamentMobileBottomNavigationServiceProvider::class,
+],
+```
+
+### CSS not loading
+
+```bash
+php artisan view:clear
+php artisan filament:optimize-clear
+php artisan filament:optimize
+```
+
+### Navigation appears on desktop
+
+- Ensure viewport width < 768px in DevTools
+- Hard refresh browser (Ctrl+Shift+R)
+- Check DevTools for CSS 404 errors
+
+## Next Steps
+
+After successful installation:
+
+1. **Customize Theme Colors:**
+   ```php
+   use Filament\Support\Colors\Color;
+   
+   $panel->colors(['primary' => Color::Amber])
+   ```
+
+2. **Enable Dark Mode:**
+   ```php
+   $panel->darkMode(true)
+   ```
+
+3. **Add Navigation Items:**
+   ```php
+   $panel->navigationItems([
+       NavigationItem::make('Custom')
+           ->url('/custom')
+           ->icon('heroicon-o-star')
+   ])
+   ```
+
+4. **Test on Real Devices:** Deploy to staging and test on physical iOS/Android devices
 
 ## Usage
 
