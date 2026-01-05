@@ -201,6 +201,7 @@ class FilamentMobileBottomNavigationServiceProvider extends PackageServiceProvid
             $panelId = $this->getId();
             $enabled = $this->isMobileBottomNavigationEnabled();
             $status = $enabled ? '✅ ACTIVE' : '❌ DISABLED';
+
             return "Mobile Bottom Navigation [{$panelId}]: {$status}";
         });
     }
