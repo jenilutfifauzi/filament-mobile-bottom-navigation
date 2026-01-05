@@ -167,10 +167,10 @@ class FilamentMobileBottomNavigationServiceProvider extends PackageServiceProvid
 
     /**
      * Register Panel macro for optional configuration
-     * 
+     *
      * Allows developers to optionally configure the mobile bottom navigation
      * through Filament's Panel configuration, while maintaining zero-config by default.
-     * 
+     *
      * Usage:
      *   $panel->mobileBottomNavigation()              // Explicitly enable (default)
      *   $panel->mobileBottomNavigation(true)          // Explicitly enable
@@ -179,15 +179,15 @@ class FilamentMobileBottomNavigationServiceProvider extends PackageServiceProvid
      */
     protected function registerPanelMacro(): void
     {
-        Panel::macro('mobileBottomNavigation', function (bool|Closure $condition = true): Panel {
+        Panel::macro('mobileBottomNavigation', function (bool | Closure $condition = true): Panel {
             /** @var Panel $this */
-            
+
             // Resolve closure or use boolean directly
             $enabled = value($condition);
-            
+
             // Store configuration on panel instance
             $this->mobileBottomNavigationEnabled = $enabled;
-            
+
             // Return for fluent interface
             return $this;
         });
@@ -195,7 +195,7 @@ class FilamentMobileBottomNavigationServiceProvider extends PackageServiceProvid
 
     /**
      * Auto-inject mobile bottom navigation into Filament layouts
-     * 
+     *
      * Registers a render hook that automatically includes the bottom navigation
      * component in all Filament panels, unless explicitly disabled via the macro.
      */
@@ -206,13 +206,13 @@ class FilamentMobileBottomNavigationServiceProvider extends PackageServiceProvid
                 'panels::body.end',
                 function (): string {
                     $panel = Filament::getCurrentPanel();
-                    
+
                     // Check if explicitly disabled via macro
-                    if (property_exists($panel, 'mobileBottomNavigationEnabled') && 
-                        !$panel->mobileBottomNavigationEnabled) {
+                    if (property_exists($panel, 'mobileBottomNavigationEnabled') &&
+                        ! $panel->mobileBottomNavigationEnabled) {
                         return '';
                     }
-                    
+
                     // Render component (enabled by default or explicitly enabled)
                     return Blade::render('<livewire:filament-mobile-bottom-navigation />');
                 }
