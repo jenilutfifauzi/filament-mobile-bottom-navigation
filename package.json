@@ -11,7 +11,10 @@
         "build": "npm-run-all build:*",
         "test:browser": "playwright test",
         "test:browser:headed": "playwright test --headed",
-        "test:a11y": "playwright test --grep @a11y"
+        "test:a11y": "playwright test --grep @a11y",
+        "lighthouse": "lhci autorun",
+        "lighthouse:ci": "lhci autorun --collect.url=http://localhost:8000",
+        "analyze:css": "du -sh resources/dist/*.css && echo '---' && du -sh resources/css/*.css"
     },
     "devDependencies": {
         "@awcodes/filament-plugin-purge": "^1.1.1",

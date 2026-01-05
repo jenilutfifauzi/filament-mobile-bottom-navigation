@@ -1,0 +1,38 @@
+{
+  "ci": {
+    "collect": {
+      "url": ["http://localhost:8000"],
+      "numberOfRuns": 1,
+      "settings": {
+        "preset": "mobile",
+        "emulatedFormFactor": "mobile",
+        "onlyCategories": ["performance", "accessibility"],
+        "skipAudits": ["canonical", "service-worker"],
+        "throttling": {
+          "rttMs": 40,
+          "throughputKbps": 10240,
+          "cpuSlowdownMultiplier": 1
+        },
+        "screenEmulation": {
+          "mobile": true,
+          "width": 390,
+          "height": 844,
+          "deviceScaleFactor": 2.75
+        }
+      }
+    },
+    "assert": {
+      "preset": "lighthouse:no-pwa",
+      "assertions": {
+        "categories:performance": ["error", { "minScore": 0.90 }],
+        "categories:accessibility": ["error", { "minScore": 0.90 }],
+        "first-contentful-paint": ["error", { "maxNumericValue": 1800 }],
+        "largest-contentful-paint": ["error", { "maxNumericValue": 2500 }],
+        "cumulative-layout-shift": ["error", { "maxNumericValue": 0.1 }],
+        "speed-index": ["error", { "maxNumericValue": 3000 }],
+        "interactive": ["error", { "maxNumericValue": 3800 }],
+        "render-blocking-resources": "warn"
+      }
+    }
+  }
+}

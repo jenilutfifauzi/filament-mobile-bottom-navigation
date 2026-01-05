@@ -181,3 +181,11 @@
     </nav>
 @endif
 
+{{-- Async load non-critical CSS enhancements (animations, transitions, theme variables) --}}
+<link rel="preload"
+      href="{{ asset('css/mobile-bottom-nav-enhancements.css') }}"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'">
+<noscript>
+  <link rel="stylesheet" href="{{ asset('css/mobile-bottom-nav-enhancements.css') }}">
+</noscript>
