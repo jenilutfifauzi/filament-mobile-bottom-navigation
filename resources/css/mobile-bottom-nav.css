@@ -61,8 +61,12 @@ body {
     background-color: var(--gray-50);
     border-top: 1px solid var(--gray-200);
 
-    /* iOS Safe Area Support - prevents clipping by home indicator */
+    /* iOS Safe Area Support */
+    /* Bottom padding: prevents clipping by home indicator (34px portrait, 21px landscape) */
     padding-bottom: env(safe-area-inset-bottom, 0);
+    /* Side padding: prevents clipping by Dynamic Island/notch in landscape mode */
+    padding-left: env(safe-area-inset-left, 0);
+    padding-right: env(safe-area-inset-right, 0);
 }
 
 /**
@@ -163,16 +167,16 @@ body {
     font-size: var(--font-size-xs);            /* 12px - minimum readable size */
     font-weight: var(--font-weight-medium);    /* 500 - readable at small size */
     line-height: var(--line-height-tight);     /* 1.25 - compact spacing */
-    
+
     /* Layout */
     text-align: center;
-    
+
     /* Mobile optimization */
     -webkit-font-smoothing: antialiased;       /* Crisp rendering on WebKit */
     -moz-osx-font-smoothing: grayscale;        /* Crisp rendering on Firefox */
     -webkit-text-size-adjust: 100%;            /* Prevent iOS landscape zoom */
     user-select: none;                         /* Prevent accidental text selection */
-    
+
     /* Text color from parent */
     color: currentColor;
 }
