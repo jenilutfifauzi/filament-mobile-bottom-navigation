@@ -373,11 +373,108 @@ return $panel
 
 ### Dark Mode
 
-Automatic dark mode support:
+Automatic dark mode support with proper color switching:
 
 ```php
 return $panel
     ->darkMode(true) // Bottom nav adapts automatically
+```
+
+**Features:**
+- Automatic detection of system dark mode preference
+- Manual toggle support (respects user's theme selection)
+- Proper CSS specificity ensures colors change on toggle
+- Works with Filament's dark mode implementation
+- Tested with HP dark mode + manual light toggle
+
+**CSS Strategy:**
+The dark mode implementation uses a triple-layer CSS approach:
+
+1. **Explicit Light Mode** (Highest Priority)
+   - Selector: `html:not(.dark) .fmbn-bottom-nav`
+   - Use: Ensures light colors when user manually selects light theme
+
+2. **Class-Based Dark Mode** (Higher Priority)
+   - Selector: `.dark .fmbn-bottom-nav`
+   - Use: Applies dark colors when Filament adds `.dark` class to `<html>`
+
+3. **Media Query Fallback** (Lower Priority)
+   - Query: `@media (prefers-color-scheme: dark)`
+   - Use: System preference detection for initial load
+
+This approach ensures proper color switching in all scenarios:
+- System dark mode + no toggle = media query applies
+- System dark + manual light toggle = explicit light mode applies
+- System light + manual dark toggle = class-based dark mode applies
+
+## Authentication & Page Exclusion
+
+The mobile bottom navigation automatically hides on:
+
+1. **Authentication Pages**
+   - Login pages
+   - Registration pages  
+   - Password reset flows
+   - Email verification pages
+
+2. **Unauthenticated Access**
+   - No navigation shown if user not authenticated
+   - Prevents UI confusion on public pages
+
+**Example:**
+A user visiting `/admin/login` will NOT see the bottom navigation, keeping the interface clean.
+
+## Status Indicator Macros
+
+Check if mobile bottom navigation is enabled for a panel:
+
+```php
+// Check if enabled (boolean)
+if ($panel->isMobileBottomNavigationEnabled()) {
+    // Navigation is active
+}
+
+// Get status string with indicator
+$status = $panel->getMobileBottomNavigationStatus();
+// Output: "✅ Mobile Bottom Navigation: Enabled"
+// or
+// Output: "❌ Mobile Bottom Navigation: Disabled"
+
+// Configure enable/disable
+$panel->mobileBottomNavigation(true);  // Enable
+$panel->mobileBottomNavigation(false); // Disable
+```
+
+**Use Cases:**
+- Admin dashboard showing which plugins are active
+- Debug logs showing plugin status on each page load
+- Settings page displaying feature availability
+- Integration checking before dependent features load
+
+**Example in Admin Dashboard:**
+```php
+// In a Filament resource or page
+use Filament\Infolists\Infolist;
+
+public function infolist(Infolist $infolist): Infolist
+{
+    return $infolist
+        ->schema([
+            Section::make('Enabled Plugins')
+                ->description(
+                    Auth::user()->can('view_system_status') 
+                        ? 'Status of installed admin plugins'
+                        : null
+                )
+                ->columns(2)
+                ->schema([
+                    Stat::make(
+                        'Mobile Navigation',
+                        auth()->user()->panel->getMobileBottomNavigationStatus()
+                    ),
+                ])
+        ]);
+}
 ```
 
 ## Troubleshooting
@@ -408,6 +505,54 @@ return $panel
      php artisan package:discover
      ```
 
+5. **Unauthenticated or on auth page**
+   - **Solution:** The navigation only appears on authenticated pages outside of login/register/password flows. Try navigating to a protected page after logging in.
+
+### Dark Mode Not Switching Colors
+
+**Issue:** Background color doesn't change when toggling between light and dark mode
+
+**Debug Steps:**
+
+1. **Check HTML for dark class:**
+   ```bash
+   # In browser DevTools console
+   document.documentElement.classList.contains('dark')
+   # Should return: true (dark mode) or false (light mode)
+   ```
+
+2. **Verify CSS loaded:**
+   ```bash
+   # In DevTools Network tab
+   # Check that mobile-bottom-navigation-*.css loads successfully
+   # Status should be 200 (OK)
+   ```
+
+3. **Check CSS specificity:**
+   ```bash
+   # In DevTools Styles panel, click the bottom nav element
+   # Look for: 
+   # ✅ html:not(.dark) .fmbn-bottom-nav (light mode)
+   # ✅ .dark .fmbn-bottom-nav (dark mode)
+   ```
+
+4. **Clear cache if recently updated:**
+   ```bash
+   php artisan optimize:clear
+   npm run build
+   ```
+
+5. **Test in private/incognito mode:**
+   - Clears cached CSS/localStorage
+   - Isolates theme preference issues
+
+**Common Scenario:** 
+- System dark mode enabled
+- User manually toggles to light theme
+- Bottom navigation still showing dark colors
+
+**Solution:** This is now fixed! The triple-layer CSS strategy ensures `.dark` class-based selector takes priority over media query.
+
 ### Navigation Items Cut Off on iPhone
 
 **Cause:** Missing `viewport-fit=cover` meta tag
@@ -431,6 +576,105 @@ return $panel
 - Clear cache: `php artisan optimize:clear`
 - Verify CSS file loads: DevTools → Network tab
 - Check body padding: DevTools → Styles → body element
+
+### Navigation Showing on Login/Register Pages
+
+**Issue:** Bottom navigation appears on `/admin/login` or `/admin/register`
+
+**Solution:** This should NOT happen with version 1.0.2+. The plugin automatically excludes:
+- Login pages (`login`)
+- Register pages (`register`)  
+- Password reset pages (`password.request`, `password.reset`, `password.email`)
+- Unauthenticated users
+
+If still occurring:
+1. Update to latest version: `composer update jenilutfifauzi/filament-mobile-bottom-navigation`
+2. Clear cache: `php artisan optimize:clear`
+3. Check route names match Filament defaults
+
+## Configuration Examples
+
+### Basic Setup (Recommended)
+
+```php
+// app/Providers/Filament/AdminPanelProvider.php
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        ->id('admin')
+        ->path('admin')
+        ->darkMode(true)
+        ->navigationGroups([
+            'Main' => [
+                Pages\Dashboard::class,
+                Resources\ProductResource::class,
+            ],
+        ])
+        // Mobile bottom navigation works automatically!
+}
+```
+
+### Multi-Panel with Mixed Configuration
+
+```php
+// Admin Panel - Mobile nav enabled with dark mode
+class AdminPanelProvider extends PanelProvider
+{
+    public function panel(Panel $panel): Panel
+    {
+        return $panel
+            ->id('admin')
+            ->path('admin')
+            ->darkMode(true)
+            ->mobileBottomNavigation(true)
+    }
+}
+
+// Internal Panel - Mobile nav disabled
+class InternalPanelProvider extends PanelProvider
+{
+    public function panel(Panel $panel): Panel
+    {
+        return $panel
+            ->id('internal')
+            ->path('internal')
+            ->mobileBottomNavigation(false)
+    }
+}
+
+// User Portal - Mobile nav conditional on device
+class UserPanelProvider extends PanelProvider
+{
+    public function panel(Panel $panel): Panel
+    {
+        return $panel
+            ->id('user')
+            ->path('user')
+            ->mobileBottomNavigation(fn() => 
+                request()->userAgent() && 
+                (str_contains(request()->userAgent(), 'Mobile') ||
+                 str_contains(request()->userAgent(), 'Tablet'))
+            )
+    }
+}
+```
+
+### Monitoring in Debug Mode
+
+```php
+// Enable debug logging for mobile navigation status
+// In .env during development:
+LOG_LEVEL=debug
+
+// Check logs:
+// tail -f storage/logs/laravel-*.log | grep "Mobile Bottom Navigation"
+```
+
+Output will show:
+```
+[2024-01-15 10:30:45] local.DEBUG: ✅ Mobile Bottom Navigation: Enabled (admin panel)
+[2024-01-15 10:30:46] local.DEBUG: ❌ Mobile Bottom Navigation: Disabled (internal panel)
+```
 
 ## Testing
 
@@ -506,7 +750,47 @@ The MIT License (MIT). See [License File](LICENSE.md) for more information.
 
 See [CHANGELOG](CHANGELOG.md) for recent changes.
 
-### Version 1.0.0 (Current)
+### Version 1.0.2 (Current)
+
+**Enhanced Dark Mode & Security**
+
+Features:
+- 🌓 **Dark Mode Triple-Layer CSS** - Fixed system dark + manual toggle scenario
+  - Explicit light mode selectors with priority
+  - Class-based dark mode support  
+  - Media query fallback for system preference
+  - Tested on HP dark + manual light toggle
+
+- 🔐 **Smart Page Exclusion** - Navigation auto-hides on:
+  - Login/Register pages
+  - Password reset flows
+  - Unauthenticated users
+  - Keeps interface clean on auth flows
+
+- 📊 **Status Indicator Macros** - Developer tools for monitoring:
+  - `isMobileBottomNavigationEnabled()` - boolean check
+  - `getMobileBottomNavigationStatus()` - formatted status string with ✅/❌
+  - `mobileBottomNavigation()` - configuration option
+
+- 🐛 **Bug Fixes**:
+  - Fixed dark mode CSS specificity issues
+  - Fixed macro registration timing (moved to `packageRegistered()` phase)
+  - Fixed NavigationGroup handling (flatMap logic)
+  - Added auto-logging for plugin status
+
+- ✅ **Improved Documentation**:
+  - Dark mode debugging guide
+  - Configuration examples for multi-panel setups
+  - Troubleshooting dark mode scenarios
+  - Status indicator usage examples
+
+### Version 1.0.1
+
+- 🐛 Production bug fixes for icon rendering
+- ✨ Added `wire:navigate` for SPA support
+- 📱 Improved mobile responsiveness
+
+### Version 1.0.0
 
 - ✨ Initial release
 - ✨ Mobile bottom navigation component
