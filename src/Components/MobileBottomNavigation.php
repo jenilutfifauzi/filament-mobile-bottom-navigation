@@ -31,8 +31,6 @@ class MobileBottomNavigation extends Component
 
     /**
      * Render the mobile bottom navigation component.
-     *
-     * @return View
      */
     public function render(): View
     {
