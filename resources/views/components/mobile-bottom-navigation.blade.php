@@ -62,8 +62,8 @@
         display: flex;
         flex-wrap: wrap;
         height: var(--fmbn-nav-height);
-        background-color: #ffffff;
-        border-top: 1px solid #e5e7eb;
+        background-color: var(--gray-50, #f9fafb);
+        border-top: 1px solid var(--gray-200, #e5e7eb);
         box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.1);
         padding: var(--fmbn-nav-padding-top) 0;
         padding-bottom: calc(var(--fmbn-nav-padding-bottom) + env(safe-area-inset-bottom, 0px));
@@ -119,7 +119,7 @@
         min-height: 44px;
         min-width: 44px;
         padding: 0.5rem;
-        color: #6b7280;
+        color: var(--gray-600, #4b5563);
         text-decoration: none;
         transition: all 0.2s ease-in-out;
         position: relative;
@@ -140,8 +140,8 @@
     }
 
     .fmbn-nav-item:hover {
-        background-color: #f3f4f6;
-        color: #374151;
+        background-color: var(--gray-100, #f3f4f6);
+        color: var(--primary-600, #2563eb);
     }
 
     .fmbn-nav-item:hover .fmbn-nav-item__icon {
@@ -149,14 +149,14 @@
     }
 
     .fmbn-nav-item--active {
-        color: #2563eb;
-        background-color: #eff6ff;
-        border-top: 2px solid #2563eb;
+        color: var(--primary-600, #2563eb) !important;
+        background-color: var(--primary-50, #eff6ff) !important;
+        border-top: 2px solid var(--primary-600, #2563eb) !important;
         border-radius: 0.5rem;
     }
 
     .fmbn-nav-item--active .fmbn-nav-item__icon {
-        color: #2563eb;
+        color: var(--primary-600, #2563eb) !important;
         font-weight: 600;
     }
 
@@ -191,8 +191,8 @@
         min-width: 1.25rem;
         height: 1.25rem;
         padding: 0 0.25rem;
-        background-color: #ef4444;
-        color: #ffffff;
+        background-color: var(--danger-600, #dc2626);
+        color: var(--gray-50, #f9fafb);
         font-size: 0.625rem;
         font-weight: 600;
         border-radius: 999px;
@@ -207,79 +207,79 @@
 
     /* Light mode - Explicit override for manual toggle (highest priority) */
     html:not(.dark) .fmbn-bottom-nav {
-        background-color: #ffffff !important;
-        border-top-color: #e5e7eb !important;
+        background-color: var(--gray-50, #f9fafb) !important;
+        border-top-color: var(--gray-200, #e5e7eb) !important;
     }
 
     html:not(.dark) .fmbn-nav-item {
-        color: #6b7280 !important;
+        color: var(--gray-600, #4b5563) !important;
     }
 
     html:not(.dark) .fmbn-nav-item:hover {
-        background-color: #f3f4f6 !important;
-        color: #374151 !important;
+        background-color: var(--primary-50, #eff6ff) !important;
+        color: var(--primary-600, #2563eb) !important;
     }
 
     html:not(.dark) .fmbn-nav-item--active {
-        color: #2563eb !important;
-        background-color: #eff6ff !important;
-        border-top-color: #2563eb !important;
+        color: var(--primary-600, #2563eb) !important;
+        background-color: var(--primary-50, #eff6ff) !important;
+        border-top-color: var(--primary-600, #2563eb) !important;
     }
 
     html:not(.dark) .fmbn-nav-item--active .fmbn-nav-item__icon {
-        color: #2563eb !important;
+        color: var(--primary-600, #2563eb) !important;
     }
 
     /* Dark mode support - System preference (OS/Browser setting) */
     @media (prefers-color-scheme: dark) {
         .fmbn-bottom-nav {
-            background-color: #1f2937;
-            border-top-color: #374151;
+            background-color: var(--gray-900, #111827);
+            border-top-color: var(--gray-700, #374151);
         }
 
         .fmbn-nav-item {
-            color: #9ca3af;
+            color: var(--gray-400, #9ca3af);
         }
 
         .fmbn-nav-item:hover {
-            background-color: #2d3748;
-            color: #d1d5db;
+            background-color: var(--gray-800, #1f2937);
+            color: var(--gray-300, #d1d5db);
         }
 
         .fmbn-nav-item--active {
-            color: #60a5fa;
-            background-color: #1e3a8a;
-            border-top-color: #60a5fa;
+            color: var(--primary-400, #60a5fa) !important;
+            background-color: var(--primary-950, #1e3a8a) !important;
+            border-top-color: var(--primary-400, #60a5fa) !important;
         }
 
         .fmbn-nav-item--active .fmbn-nav-item__icon {
-            color: #60a5fa;
+            color: var(--primary-400, #60a5fa) !important;
         }
     }
 
     /* Dark mode support - Class-based (Filament manual toggle) - Overrides media query */
     .dark .fmbn-bottom-nav {
-        background-color: #1f2937 !important;
-        border-top-color: #374151 !important;
+        background-color: var(--gray-900, #111827) !important;
+        border-top-color: var(--gray-700, #374151) !important;
     }
 
     .dark .fmbn-nav-item {
-        color: #9ca3af !important;
+        color: var(--gray-400, #9ca3af) !important;
     }
 
     .dark .fmbn-nav-item:hover {
-        background-color: #2d3748 !important;
-        color: #d1d5db !important;
+        background-color: var(--gray-800, #1f2937) !important;
+        color: var(--gray-300, #d1d5db) !important;
     }
 
     .dark .fmbn-nav-item--active {
-        color: #60a5fa !important;
-        background-color: #1e3a8a !important;
-        border-top-color: #60a5fa !important;
+        color: var(--primary-400, #60a5fa) !important;
+        background-color: var(--primary-950, #1e3a8a) !important;
+        border-top-color: var(--primary-400, #60a5fa) !important;
     }
 
     .dark .fmbn-nav-item--active .fmbn-nav-item__icon {
-        color: #60a5fa !important;
+        color: var(--primary-400, #60a5fa) !important;
     }
 
     /* High contrast mode */
@@ -332,7 +332,7 @@
                                 <x-filament::icon
                                     :icon="$item->getIcon()"
                                     class="h-6 w-6"
-                                    style="width: 24px; height: 24px; currentColor;"
+                                    style="width: 24px; height: 24px; color: currentColor;"
                                 />
                             @endif
 

@@ -772,13 +772,14 @@ Features:
   - `getMobileBottomNavigationStatus()` - formatted status string with ✅/❌
   - `mobileBottomNavigation()` - configuration option
 
-- 🐛 **Bug Fixes**:
-  - Fixed dark mode CSS specificity issues
-  - Fixed macro registration timing (moved to `packageRegistered()` phase)
-  - Fixed NavigationGroup handling (flatMap logic)
-  - Added auto-logging for plugin status
+ - 🐛 **Bug Fixes**:
+   - Fixed dark mode CSS specificity issues
+   - Fixed macro registration timing (moved to `packageRegistered()` phase)
+   - Fixed NavigationGroup handling (flatMap logic)
+   - Fixed primary color integration - navigation now properly uses Filament's CSS variables instead of hardcoded colors
+   - Added auto-logging for plugin status
 
-- ✅ **Improved Documentation**:
+ - ✅ **Improved Documentation**:
   - Dark mode debugging guide
   - Configuration examples for multi-panel setups
   - Troubleshooting dark mode scenarios
